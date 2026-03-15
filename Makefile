@@ -1,46 +1,14 @@
-import Foundation
+install:
+	pip install -r requirements.txt
 
-class main {
-    let name: String
-    let version: String
-    var items: [String]
+test:
+	pytest tests/
 
-    init(name: String = "gganatogram", version: String = "1.0.0") {
-        self.name = name
-        self.version = version
-        self.items = ["Item 1", "Item 2", "Item 3"]
-    }
+lint:
+	flake8 src/
 
-    func run() {
-        print("Welcome to \\(name) v\\(version)")
-        print("Items:")
-        for item in items {
-            print("- \\(item)")
-        }
-    }
+docker-build:
+	docker build -t neural-network-visualizer .
 
-    func addItem(_ item: String) {
-        items.append(item)
-    }
-
-    func toJSON() -> String? {
-        let data: [String: Any] = [
-            "name": name,
-            "version": version,
-            "items": items
-        ]
-
-        if let jsonData = try? JSONSerialization.data(withJSONObject: data, options: .prettyPrinted) {
-            return String(data: jsonData, encoding: .utf8)
-        }
-        return nil
-    }
-}
-
-// Usage
-let app = main()
-app.run()
-if let json = app.toJSON() {
-    print("\nJSON Output:")
-    print(json)
-}
+docker-run:
+	docker run -p 8000:8000 neural-network-visualizer
